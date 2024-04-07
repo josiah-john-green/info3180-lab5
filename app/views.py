@@ -9,7 +9,6 @@ from app import app
 from flask import render_template, request, jsonify, send_file
 import os
 
-
 ###
 # Routing for your application.
 ###
@@ -19,12 +18,45 @@ def index():
     return jsonify(message="This is the beginning of our API")
 
 
+@app.route('/api/v1/movies', methods=['POST'])
+def save_movie():
+    form = MovieForm()
+
+    if form.validate_on_submit():
+        poster = form.poster.data
+        filename = secure_filename(poster.filename)
+        poster.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        movie = Movie(
+            title=form.title.data,
+            description=form.description.data,
+            poster=filename
+        )
+
+        db.session.add(movie)
+        db.session.commit()
+
+        response_data = {
+            "message": "Movie successfully added",
+            "title": form.title.data,
+            "description": form.description.data,
+            "poster": filename
+        }
+        return jsonify(response_data), 201
+
+    else:
+        errors = form_errors(form)
+        return jsonify({"errors": errors}), 400
+
+
 ###
 # The functions below should be applicable to all Flask apps.
 ###
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
+
+
 def form_errors(form):
     error_messages = []
     """Collects form errors"""
@@ -37,6 +69,7 @@ def form_errors(form):
             error_messages.append(message)
 
     return error_messages
+
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
