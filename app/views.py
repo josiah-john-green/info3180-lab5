@@ -52,6 +52,22 @@ def save_movie():
         errors = form_errors(form)
         return jsonify({"errors": errors}), 400
 
+# Route to fetch all movies
+@app.route('/api/v1/movies', methods=['GET'])
+def get_movies():
+    movies = Movie.query.all()
+    movie_list = []
+    for movie in movies:
+        movie_data = {
+            'id': movie.id,
+            'title': movie.title,
+            'description': movie.description,
+            'poster': movie.poster
+        }
+        movie_list.append(movie_data)
+        
+    return jsonify({'movies': movie_list})
+
 # Route for retrieving CSRF token.
 @app.route('/api/v1/csrf-token', methods=['GET']) 
 def get_csrf(): 

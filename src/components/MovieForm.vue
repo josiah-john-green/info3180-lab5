@@ -106,6 +106,12 @@
               poster: null
           };
 
+          // Clear success message
+          successMessage.value = '';
+
+          // Clear error message space before processing the form
+          errorMessage.value = []; // Clear error message space before processing the form
+
           // Show success message
           successMessage.value = 'File Upload Successfully!';
 
@@ -113,7 +119,11 @@
       .catch(function (error) {
           console.error('There was a problem with the fetch operation:', error);
           
-          errorMessage.value = []; // Clear error message space before processing the form
+          // Clear success message
+          successMessage.value = '';
+
+          // Clear error message space before processing the form
+          errorMessage.value = []; 
 
           if (!formData.value.title.trim()) {
               errorMessage.value.push('Error in the Title field - This field is required.');
