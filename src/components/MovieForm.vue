@@ -105,7 +105,10 @@
               description: '',
               poster: null
           };
-
+          
+          // Clear the form data after successful submission, primarly uploads
+          movieForm.reset(); // Reset the form
+          
           // Clear success message
           successMessage.value = '';
 
