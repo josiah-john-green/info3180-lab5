@@ -102,8 +102,7 @@
           // Clear the form data after successful submission
           formData.value = {
               title: '',
-              description: '',
-              poster: null
+              description: ''
           };
           
           // Clear the form data after successful submission, primarly uploads
